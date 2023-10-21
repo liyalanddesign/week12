@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project</title>
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.css"
+    />
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!-- Hero Section with Jumbotron -->
+    <div class="container">
+      <div class="p-5 mb-4 mt-4 bg-body-tertiary bg-body-secondary rounded-3">
+        <div class="container-fluid py-5 text-center">
+          <h1 class="display-5 fw-bold">Week 12 Assignment</h1>
+          <p class="col-md-12 fs-4">
+            This is CRUD application using jQuery and Bootstrap.
+          </p>
+          <button class="btn btn-primary btn-lg mt-4" type="button">
+            Start App
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Section -->
+    <main>
+      <!-- FORM -->
+      <div class="container bg-body-tertiary border text-bg-info rounded-3 p-3 pb-5">
+        <div class="row">
+          <h2 class="mb-3">Add new Worker</h2>
+        </div>
+        <div class="row">
+          <!-- Name -->
+          <div class="col-md-4">
+            <div id="form-name">
+              <div class="input-group">
+                <span class="input-group-text">Name</span>
+                <input
+                  id="name"
+                  class="form-control"
+                  aria-label="With input"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- Last Name -->
+          <div class="col-md-4">
+            <div id="form-last-name">
+              <div class="input-group">
+                <span class="input-group-text">Last Name</span>
+                <input
+                  id="lastName"
+                  class="form-control"
+                  aria-label="With input"
+                ></input>
+              </div>
+            </div>
+          </div>
+          <!-- Text -->
+          <div class="col-md-4">
+            <div id="form-description">
+              <div class="input-group">
+                <span class="input-group-text">Book's Description</span>
+                <textarea
+                  id="description"
+                  class="form-control"
+                  aria-label="With textarea"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Button -->
+        <button id="addPerson" class="btn btn-lg btn-primary mt-3 visible">Add Person</botton>
+          <button id="updatePerson" class="btn btn-lg btn-warning mt-3 ">Update Person</botton>
+      </div>
+
+      <!-- List of Books -->
+
+      <div class="container">
+        <div class="row mt-3">
+          <div class="app">
+            <div class="container p-0">
+              <div class="row py-3" id="app"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+    <script src="app.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  </body>
+</html>
