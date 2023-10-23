@@ -3,17 +3,6 @@ class Person {
     this.name = name;
     this.lastName = lastName;
     this.description = description;
-    this.skills = [];
-  }
-
-  addSkill(name) {
-    this.skills.push(new Skill(name));
-  }
-}
-
-class Skill {
-  constructor(name) {
-    this.name = name;
   }
 }
 
@@ -33,7 +22,6 @@ class PersonService {
     return $.post(this.url, name, lastName, description);
   }
 
-  // to watch "_" in url
   static updatePerson(person, name, lastName, description) {
     return $.ajax({
       url: `${this.url}/${person.id}`,
@@ -67,29 +55,24 @@ class DOMManager {
       .then((persons) => this.render(persons));
   }
 
-  static initiateUpdatePerson(id) {
+  static updatePerson(id) {
     for (let person of this.persons) {
       if (person.id == id) {
-        // Fill inputs with data belongs to user which has to be updated
-        $("#name").val(person.name),
-          $("#lastName").val(person.lastName),
-          $("#description").val(person.description);
-        console.log(person);
+        person.name = $("#name").val();
+        person.lastName = $("#lastName").val();
+        person.description = $("#description").val();
 
-        $("#updatePerson").on("click", () => {
-          person.name = $("#name").val();
-          person.lastName = $("#lastName").val();
-          person.description = $("#description").val();
+        PersonService.updatePerson(person)
+          .then(() => {
+            return PersonService.getAllPersons();
+          })
+          .then((persons) => this.render(persons));
 
-          console.log(person);
-
-          PersonService.updatePerson(person)
-            .then(() => {
-              return PersonService.getAllPersons();
-            })
-            .then((persons) => this.render(persons));
-          $("#name").val(""), $("#lastName").val(""), $("#description").val("");
-        });
+        // Finalising our work and clean up all mess
+        $("#name").val(""), $("#lastName").val(""), $("#description").val("");
+        $("#addPerson").css("display", "block");
+        $("#updatePerson").css("display", "none");
+        $("#updatePerson").attr("current-id", "");
       }
     }
   }
@@ -100,18 +83,21 @@ class DOMManager {
       .then((persons) => this.render(persons));
   }
 
-  // static addSkill(id) {
-  //   for (let person of this.persons) {
-  //     if (person.id == id) {
-  //       person.skills.push(new Skill($(`#${person.id}-skill-name`).val()));
-  //       PersonService.updatePerson(person)
-  //         .then(() => {
-  //           return PersonService.getAllPersons();
-  //         })
-  //         .then((persons) => this.render(persons));
-  //     }
-  //   }
-  // }
+  // This function is used for populating form with data from card.
+
+  static updateInit(id) {
+    // get current person's data and populate form inputs with this data
+    for (let person of this.persons) {
+      if (person.id == id) {
+        $("#name").val(person.name);
+        $("#lastName").val(person.lastName);
+        $("#description").val(person.description);
+      }
+    }
+    $("#addPerson").css("display", "none");
+    $("#updatePerson").css("display", "block");
+    $("#updatePerson").attr("current-id", id);
+  }
 
   static render(persons) {
     this.persons = persons;
@@ -138,13 +124,15 @@ class DOMManager {
           <!-- End of card header  -->
       
           <!-- Card Body -->
-          <div class="card-body"> 
+          <div class="card-body">
+            <!-- Visible Text  -->
             <div class="row visible">
               <p>${person.description}</p>
             </div>
-            
+            <!-- Text which visible on hover  -->
             <div class="hidden">
-              <button class="btn btn-danger" onclick="DOMManager.deletePerson('${person.id}')">Delete Card</button>
+              <button id="deleteBtn" class="btn btn-danger" onclick="DOMManager.deletePerson('${person.id}')">Delete Card</button>
+              <button id="updateBtn" class="btn btn-warning" onclick="DOMManager.updateInit('${person.id}')">Update Card!</button>
             </div>
             
 
@@ -174,6 +162,11 @@ $("#addPerson").on("click", function () {
     $("#description").val()
   );
   $("#name").val(""), $("#lastName").val(""), $("#description").val("");
+});
+
+$("#updatePerson").on("click", function () {
+  let id = $("#updatePerson").attr("current-id");
+  DOMManager.updatePerson(id);
 });
 
 DOMManager.getAllPersons();
